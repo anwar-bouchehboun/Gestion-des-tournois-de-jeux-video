@@ -10,8 +10,8 @@ Ce projet est une application de gestion de tournois pour les événements d'e-s
 - **Gestion des équipes** : Création, modification, ajout/retrait de joueurs, affichage d'une ou plusieurs équipes.
 - **Gestion des tournois** : Création, modification, ajout/retrait d'équipes, affichage d'un ou plusieurs tournois.
 - **Calcul de la durée estimée d'un tournoi** :
-  - **Calcul de base** : \( \text{Durée estimée} = (\text{Nombre d'équipes} \times \text{Durée moyenne d'un match}) + \text{Temps de pause entre les matchs} \)
-  - **Calcul avancé** : \( \text{Durée estimée} = (\text{Nombre d'équipes} \times \text{Durée moyenne d'un match} \times \text{Difficulté du jeu}) + \text{Temps de pause entre les matchs} + \text{Temps de cérémonie} \)
+  - **Calcul de base** : \( {Durée estimée} = {Nombre d'équipes}{Durée moyenne d'un match}) +{Temps de pause entre les matchs}
+  - **Calcul avancé** : \( {Durée estimée} = ({Nombre d'équipes} \times {Durée moyenne d'un match} {Difficulté du jeu}) + {Temps de pause entre les matchs} + {Temps de cérémonie} )
 
 ## Structure du projet
 
