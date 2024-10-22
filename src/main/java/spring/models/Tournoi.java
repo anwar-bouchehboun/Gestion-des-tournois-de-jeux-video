@@ -2,6 +2,9 @@ package spring.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,10 +22,10 @@ public class Tournoi {
     private Jeu jeu;
 
     @NotNull(message = "La date de début ne peut pas être vide")
-    private String dateDebut;
+    private LocalDate dateDebut;
 
     @NotNull(message = "La date de fin ne peut pas être vide")
-    private String dateFin;
+    private LocalDate dateFin;
 
     @NotNull(message = "Le nombre de spectateurs ne peut pas être nul")
     private int nombreSpectateurs;
@@ -33,6 +36,7 @@ public class Tournoi {
         joinColumns = @JoinColumn(name = "tournoi_id"), 
         inverseJoinColumns = @JoinColumn(name = "equipe_id") 
     )
+        
     private List<Equipe> equipes;
 
     private int dureeEstimee;
@@ -72,19 +76,19 @@ public class Tournoi {
         this.jeu = jeu;
     }
 
-    public String getDateDebut() {
+    public LocalDate getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(String dateDebut) {
+    public void setDateDebut(LocalDate dateDebut) {
         this.dateDebut = dateDebut;
     }
 
-    public String getDateFin() {
+    public LocalDate getDateFin() {
         return dateFin;
     }
 
-    public void setDateFin(String dateFin) {
+    public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
     }
 
