@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "equipes")
+@Table(name = "equipe")
 public class Equipe {
 
     @Id
@@ -13,19 +13,20 @@ public class Equipe {
     private Long id;
 
     @NotNull(message = "Le nom de l'équipe ne peut pas être vide")
+    @Column(nullable = false)
     private String nom;
 
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Joueur> joueurs;
 
-    @ManyToMany(mappedBy = "equipes")
+    @OneToMany(mappedBy = "equipes", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tournoi> tournois;
 
     @NotNull(message = "Le classement ne peut pas être nul")
+    @Column(nullable = false)
     private Integer classement;
 
-    public Equipe() {
-    }
+    public Equipe() {}
 
     // Getters et Setters
     public Long getId() {
@@ -66,5 +67,16 @@ public class Equipe {
 
     public void setClassement(Integer classement) {
         this.classement = classement;
+    }
+
+    @Override
+    public String toString() {
+        return "Equipe{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", joueurs=" + joueurs +
+                ", tournois=" + tournois +
+                ", classement=" + classement +
+                '}';
     }
 }

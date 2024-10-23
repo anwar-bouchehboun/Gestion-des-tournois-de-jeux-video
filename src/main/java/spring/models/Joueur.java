@@ -4,16 +4,18 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "joueurs")
+@Table(name = "joueur")
 public class Joueur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "Le pseudo ne peut pas être vide")
+    @Column(nullable = false)
     private String pseudo;
 
     @NotNull(message = "L'âge ne peut pas être nul")
+    @Column(nullable = false)
     private int age;
 
     @ManyToOne
@@ -21,10 +23,7 @@ public class Joueur {
     private Equipe equipe;
 
     // Constructeur
-    public Joueur() {
-       
-    }
-
+    public Joueur() {}
 
     // Getters et setters
     public Long getId() {
@@ -57,5 +56,15 @@ public class Joueur {
 
     public void setEquipe(Equipe equipe) {
         this.equipe = equipe;
+    }
+
+    @Override
+    public String toString() {
+        return "Joueur{" +
+                "id=" + id +
+                ", pseudo='" + pseudo + '\'' +
+                ", age=" + age +
+                ", equipe=" + equipe +
+                '}';
     }
 }
