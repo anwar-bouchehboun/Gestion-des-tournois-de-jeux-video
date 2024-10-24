@@ -74,8 +74,6 @@ public class Equipe {
         return "Equipe{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
-                ", joueurs=" + joueurs +
-                ", tournois=" + tournois +
                 ", classement=" + classement +
                 '}';
     }

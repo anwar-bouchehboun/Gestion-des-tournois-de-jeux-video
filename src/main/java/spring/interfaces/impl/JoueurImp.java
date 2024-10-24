@@ -1,11 +1,13 @@
 package spring.interfaces.impl;
 
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import spring.interfaces.GeneralInterface;
 import spring.models.Joueur;
 import spring.utilis.EntityManagerSingleton;
 import spring.utilis.LoggerMessage;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.List;
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class JoueurImp implements GeneralInterface<Joueur> {
 
 
+     public JoueurImp(){
+
+     }
 
 
     @Override
@@ -29,15 +34,16 @@ public class JoueurImp implements GeneralInterface<Joueur> {
             }
             transaction.commit();
             LoggerMessage.info("Joueur Ajouter Succes" + entity.getId());
-            return entity;
+
         } catch (RuntimeException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; 
+            LoggerMessage.error("Error Jouter :" +e.getMessage());
         } finally {
             EntityManagerSingleton.closeEntityManagerFactory();
         }
+        return entity;
     }
 
     @Override
@@ -49,15 +55,17 @@ public class JoueurImp implements GeneralInterface<Joueur> {
             em.merge(entity);
             transaction.commit();
             LoggerMessage.info("Joueur modifier Succes" + entity.getId());
-            return entity;
+
         } catch (RuntimeException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; 
+            LoggerMessage.error("Error Jouter :" +e.getMessage());
+
         } finally {
             em.close(); 
         }
+        return entity;
     }
 
     @Override
@@ -78,7 +86,8 @@ public class JoueurImp implements GeneralInterface<Joueur> {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; 
+            LoggerMessage.error("Error Jouter :" +e.getMessage());
+
         } finally {
             EntityManagerSingleton.closeEntityManagerFactory();
         }
@@ -86,21 +95,15 @@ public class JoueurImp implements GeneralInterface<Joueur> {
 
     @Override
     public Optional<Joueur> trouverParId(Long id) {
-        EntityManager em = EntityManagerSingleton.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
         try {
-            transaction.begin();
-            Joueur joueur = em.find(Joueur.class, id);
-            transaction.commit();
+            Joueur joueur = entityManager.find(Joueur.class, id);
             return Optional.ofNullable(joueur);
-        } catch (RuntimeException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw e; 
         } finally {
-            EntityManagerSingleton.closeEntityManagerFactory();
+            entityManager.close();
         }
+
+
     }
 
     @Override
@@ -113,4 +116,7 @@ public class JoueurImp implements GeneralInterface<Joueur> {
             EntityManagerSingleton.closeEntityManagerFactory();
         }
     }
+
+
+
 }

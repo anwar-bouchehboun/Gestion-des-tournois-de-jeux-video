@@ -1,6 +1,7 @@
 package spring.interfaces.impl;
 
 import spring.interfaces.GeneralInterface;
+import spring.interfaces.OperationInteraface;
 import spring.models.Equipe;
 import spring.utilis.EntityManagerSingleton;
 import spring.utilis.LoggerMessage;
@@ -11,19 +12,21 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-public class EquipeImp implements GeneralInterface<Equipe> {
+public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface<Equipe> {
+
+
+ 
+
+    public EquipeImp() {
+    }
 
     @Override
     public Equipe creer(Equipe entity) {
-        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager(); 
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            if (entity.getId() != null) { // Vérifiez si l'entité a déjà un ID
-                entity = entityManager.merge(entity); // Utilisez merge si l'entité est détachée
-            } else {
-                entityManager.persist(entity); // Utilisez persist pour une nouvelle entité
-            }
+            entityManager.persist(entity);
             transaction.commit();
             LoggerMessage.info("Equipe Ajouter Succes" + entity.getId());
             return entity;
@@ -43,14 +46,14 @@ public class EquipeImp implements GeneralInterface<Equipe> {
         EntityManager entityManager = EntityManagerSingleton.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
-            transaction.begin(); // Démarrer la transaction
+            transaction.begin();
             entityManager.merge(entity);
-            transaction.commit(); // Valider la transaction
+            transaction.commit();
             LoggerMessage.info("Equipe modifer Succes" + entity.getId());
             return entity;
         } catch (RuntimeException e) {
             if (transaction.isActive()) {
-                transaction.rollback(); // Annuler la transaction en cas d'erreur
+                transaction.rollback();
             }
             LoggerMessage.error("Error Debuge : " + e);
         } finally {
@@ -103,5 +106,15 @@ public class EquipeImp implements GeneralInterface<Equipe> {
         } finally {
             entityManager.close();
         }
+    }
+
+    @Override
+    public void ajouterJoueur(Long Id, Equipe entity) {
+
+    }
+
+    @Override
+    public void retirerJoueur(Long Id, Equipe entity) {
+
     }
 }

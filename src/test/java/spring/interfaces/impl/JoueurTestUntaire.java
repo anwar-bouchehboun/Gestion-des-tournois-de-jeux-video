@@ -17,7 +17,7 @@ public class JoueurTestUntaire {
 
     @Before
     public void setUp() {
-        joueurImp = new JoueurImp();
+      //  joueurImp = new JoueurImp();
     }
 
   /*  @Test

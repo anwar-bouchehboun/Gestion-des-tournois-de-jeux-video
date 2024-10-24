@@ -2,7 +2,7 @@ package spring.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
+import java.util.List;
 
 
 @Entity
@@ -26,10 +26,21 @@ public class Jeu {
     @Column(nullable = false)
     private int dureeMoyenne;
 
+    @OneToMany(mappedBy = "jeu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tournoi> tournois;
     // Constructeur par défaut
     public Jeu() {}
 
     // Getters et setters
+
+    public List<Tournoi> getTournois() {
+        return tournois;
+    }
+
+    public void setTournois(List<Tournoi> tournois) {
+        this.tournois = tournois;
+    }
+    
     public Long getId() {
         return id;
     }
