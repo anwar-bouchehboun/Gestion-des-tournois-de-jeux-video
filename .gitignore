@@ -3,3 +3,5 @@
 .classpath
 .project
 logs
+data/jeux.mv.db
+data/jeux.trace.db

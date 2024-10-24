@@ -31,7 +31,6 @@ public class Jeu {
     // Constructeur par défaut
     public Jeu() {}
 
-    // Getters et setters
 
     public List<Tournoi> getTournois() {
         return tournois;
@@ -40,7 +39,7 @@ public class Jeu {
     public void setTournois(List<Tournoi> tournois) {
         this.tournois = tournois;
     }
-    
+
     public Long getId() {
         return id;
     }
