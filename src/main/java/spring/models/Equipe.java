@@ -19,7 +19,12 @@ public class Equipe {
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Joueur> joueurs;
 
-    @OneToMany(mappedBy = "equipes", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+        name = "equipe_tournoi",
+        joinColumns = @JoinColumn(name = "equipe_id"),
+        inverseJoinColumns = @JoinColumn(name = "tournoi_id")
+    )
     private List<Tournoi> tournois;
 
     @NotNull(message = "Le classement ne peut pas être nul")

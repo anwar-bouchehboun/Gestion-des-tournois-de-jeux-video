@@ -3,12 +3,11 @@ package spring.interfaces.impl;
 import spring.interfaces.GeneralInterface;
 import spring.interfaces.OperationInteraface;
 import spring.models.Equipe;
+import spring.models.Joueur;
 import spring.utilis.EntityManagerSingleton;
 import spring.utilis.LoggerMessage;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,22 +98,68 @@ public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface
 
     @Override
     public List<Equipe> trouverTous() {
-        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+        EntityManager em = EntityManagerSingleton.getEntityManager();
         try {
-            Query query = entityManager.createQuery("SELECT e FROM Equipe e", Equipe.class);
-            return query.getResultList();
+          List<Equipe> query= em.createQuery("SELECT e FROM Equipe e", Equipe.class).getResultList();
+            return query;
+        } finally {
+            em.close();
+        }
+    }
+
+
+    @Override
+    public void ajouterJoueur(Long joueurId, Equipe equipe) {
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Joueur joueur = entityManager.find(Joueur.class, joueurId);
+            if (joueur != null) {
+                joueur.setEquipe(equipe);
+                equipe.getJoueurs().add(joueur);
+                entityManager.merge(equipe);
+                LoggerMessage.info("Joueur ajouté à l'équipe: " + joueurId);
+            } else {
+                LoggerMessage.warn("Joueur non trouvé avec l'ID: " + joueurId);
+            }
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            LoggerMessage.error("Error Debuge : " + e);
         } finally {
             entityManager.close();
         }
     }
 
     @Override
-    public void ajouterJoueur(Long Id, Equipe entity) {
-
+    public void retirerJoueur(Long joueurId, Equipe equipe) {
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Joueur joueur = entityManager.find(Joueur.class, joueurId);
+            if (joueur != null && equipe.getJoueurs().contains(joueur)) {
+                joueur.setEquipe(null);
+                equipe.getJoueurs().remove(joueur);
+                entityManager.merge(equipe);
+                LoggerMessage.info("Joueur retiré de l'équipe: " + joueurId);
+            } else {
+                LoggerMessage.warn("Joueur non trouvé ou n'appartient pas à l'équipe avec l'ID: " + joueurId);
+            }
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            LoggerMessage.error("Error Debuge : " + e);
+        } finally {
+            entityManager.close();
+        }
     }
 
-    @Override
-    public void retirerJoueur(Long Id, Equipe entity) {
+    
 
-    }
 }

@@ -34,7 +34,7 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
                 <prop key="hibernate.show_sql">felse</prop>
             </props>
         </property>
@@ -83,6 +83,6 @@
          <constructor-arg ref="jeuview"></constructor-arg>
 
     </bean>
-1
+
 
 </beans>

@@ -1,13 +1,11 @@
 package spring.interfaces.impl;
 
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import spring.interfaces.GeneralInterface;
 import spring.models.Joueur;
 import spring.utilis.EntityManagerSingleton;
 import spring.utilis.LoggerMessage;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.List;

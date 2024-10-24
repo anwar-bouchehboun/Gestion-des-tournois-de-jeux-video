@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tournoi")
@@ -32,10 +33,6 @@ public class Tournoi {
     @Column(nullable = false)
     private int nombreSpectateurs;
 
-    @ManyToOne
-    @JoinColumn(name = "equipe_id")
-    private Equipe equipes;
-
     @NotNull(message = "La durée estimée ne peut pas être nulle")
     @Min(value = 1, message = "La durée estimée doit être d'au moins 1 minute")
     @Column(nullable = false)
@@ -54,6 +51,9 @@ public class Tournoi {
     @NotNull(message = "Le statut ne peut pas être vide")
     @Column(nullable = false)
     private String statut;
+
+    @ManyToMany(mappedBy = "tournois")
+    private List<Equipe> equipes;
 
     // Constructeur par défaut
     public Tournoi() {}
@@ -107,11 +107,11 @@ public class Tournoi {
         this.nombreSpectateurs = nombreSpectateurs;
     }
 
-    public Equipe getEquipes() {
+    public List<Equipe> getEquipes() {
         return equipes;
     }
 
-    public void setEquipes(Equipe equipes) {
+    public void setEquipes(List<Equipe> equipes) {
         this.equipes = equipes;
     }
 
