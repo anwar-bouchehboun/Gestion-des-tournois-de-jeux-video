@@ -1,5 +1,6 @@
 package spring.view;
 
+import spring.interfaces.impl.TournoiDaoImpl;
 import spring.models.Tournoi;
 import spring.models.Equipe;
 import spring.models.Jeu;
@@ -14,13 +15,14 @@ import java.time.format.DateTimeFormatter;
 
 public class Tournoiview {
     private final TournoiServices tournoiServices;
-
+    private  final  EquipeServices equipeServices;
     private final JeuServices jeuServices;
     private final Scanner scanner;
 
     public Tournoiview(TournoiServices tournoiServices, EquipeServices equipeServices, JeuServices jeuServices) {
         this.tournoiServices = tournoiServices;
         this.jeuServices = jeuServices;
+        this.equipeServices=equipeServices;
         this.scanner = new Scanner(System.in);
     }
 
@@ -218,8 +220,9 @@ public class Tournoiview {
         scanner.nextLine();
 
         Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
-        if (tournoi == null) {
-            System.out.println("Tournoi non trouvé.");
+        Equipe equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
+        if (tournoi == null || equipe==null) {
+            System.out.println("Tournoi non trouvé. ou Equipe non Trouvé");
             return;
         }
 
@@ -232,11 +235,11 @@ public class Tournoiview {
         Long tournoiId = scanner.nextLong();
         System.out.print("ID de l'équipe à retirer : ");
         Long equipeId = scanner.nextLong();
-        scanner.nextLine(); 
-
+        scanner.nextLine();
         Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
-        if (tournoi == null) {
-            System.out.println("Tournoi non trouvé.");
+        Equipe equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
+        if (tournoi == null || equipe==null) {
+            System.out.println("Tournoi non trouvé ou Equipe non Trouve");
             return;
         }
         tournoiServices.retirerEquipeDuTournoi(tournoi.getId(),equipeId);
@@ -269,8 +272,14 @@ public class Tournoiview {
         System.out.print("ID du tournoi : ");
         Long tournoiId = scanner.nextLong();
         scanner.nextLine();
-
+        Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
+        if (tournoi == null) {
+            System.out.println("Tournoi non trouvé.");
+            return;
+        }
         int dureeEstimee = tournoiServices.obtenirDureeEstimeeTournoi(tournoiId);
         System.out.println("Durée estimée du tournoi : " + dureeEstimee + " jours");
     }
+
+
 }

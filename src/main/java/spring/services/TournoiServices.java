@@ -1,6 +1,8 @@
 package spring.services;
 
 import org.springframework.stereotype.Service;
+import spring.interfaces.TournoiMetier;
+import spring.interfaces.impl.TournoiDaoImpl;
 import spring.interfaces.impl.TournoiMetierImpl;
 import spring.models.Tournoi;
 import spring.utilis.LoggerMessage;
@@ -11,10 +13,11 @@ import java.util.Optional;
 @Service
 public class TournoiServices {
 
-    private final TournoiMetierImpl tournoiMetier= new TournoiMetierImpl();
+    private final TournoiMetierImpl tournoiMetier;
 
  
-    public TournoiServices() {
+    public TournoiServices(TournoiMetierImpl tournoiMetier) {
+       this.tournoiMetier=tournoiMetier;
     }
 
     public Tournoi creerTournoi(Tournoi tournoi) {
