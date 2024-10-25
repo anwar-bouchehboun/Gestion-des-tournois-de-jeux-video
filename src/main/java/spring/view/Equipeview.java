@@ -2,6 +2,7 @@ package spring.view;
 
 import spring.models.Equipe;
 import spring.services.EquipeServices;
+import spring.utilis.LoggerMessage;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +13,8 @@ public class Equipeview {
     private final EquipeServices equipeServices;
     private final Scanner scanner;
 
-
-
     public Equipeview(EquipeServices equipeServices) {
-        this.equipeServices=equipeServices;
+        this.equipeServices = equipeServices;
         this.scanner = new Scanner(System.in);
 
     }
@@ -74,7 +73,7 @@ public class Equipeview {
         System.out.print("Nom de l'équipe : ");
         String nom = scanner.nextLine();
         System.out.print("Classment de l'équipe : ");
-        int classment=scanner.nextInt();
+        int classment = scanner.nextInt();
         scanner.nextLine();
         Equipe nouvelleEquipe = new Equipe();
         nouvelleEquipe.setNom(nom);
@@ -93,7 +92,7 @@ public class Equipeview {
             System.out.print("Nouveau nom de l'équipe : ");
             String nouveauNom = scanner.nextLine();
             System.out.print("Classment de l'équipe : ");
-            int classment=scanner.nextInt();
+            int classment = scanner.nextInt();
             equipe.setClassement(classment);
             equipe.setNom(nouveauNom);
             equipeServices.modifierEquipe(equipe);
@@ -129,25 +128,32 @@ public class Equipeview {
         } else {
             System.out.printf("%-5s %-20s %-10s%n", "ID", "Nom", "Classement");
             System.out.println("----------------------------------------");
-            equipes.stream().forEach(equipe ->
-                    System.out.printf("%-5d %-20s %-10d%n",
-                            equipe.getId(), equipe.getNom(), equipe.getClassement())
-            );
+            equipes.stream().forEach(equipe -> System.out.printf("%-5d %-20s %-10d%n",
+                    equipe.getId(), equipe.getNom(), equipe.getClassement()));
         }
     }
 
     private void ajouterJoueur() {
-        System.out.print("ID de l'équipe : ");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
-        Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
-        if (equipeOpt.isPresent()) {
-            Equipe equipe = equipeOpt.get();
-            System.out.println("Ajout d'un joueur à l'équipe " + equipe.getNom());
-            equipeServices.ajouterJoueur(id, equipe);
-            System.out.println("Joueur ajouté à l'équipe.");
-        } else {
-            System.out.println("Équipe non trouvée.");
+        try {
+            System.out.print("ID de l'équipe : ");
+            Long id = scanner.nextLong();
+            scanner.nextLine();
+            System.out.print("ID de Joueur : ");
+            Long idjoueur = scanner.nextLong();
+            scanner.nextLine();
+
+            Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
+            if (equipeOpt.isPresent()) {
+                Equipe equipe = equipeOpt.get();
+                System.out.println("Ajout d'un joueur à l'équipe " + equipe.getNom());
+                equipeServices.ajouterJoueur(idjoueur, equipe);
+                System.out.println("Joueur ajouté avec succès.");
+            } else {
+                System.out.println("Équipe non trouvée. Veuillez vérifier l'ID et réessayer.");
+            }
+        } catch (Exception e) {
+            LoggerMessage.error("Une erreur s'est produite lors de l'ajout du joueur : " + e.getMessage());
+
         }
     }
 
@@ -155,12 +161,14 @@ public class Equipeview {
         System.out.print("ID de l'équipe : ");
         Long id = scanner.nextLong();
         scanner.nextLine();
+        System.out.print("ID de Joueur : ");
+        Long idjoueur = scanner.nextLong();
+        scanner.nextLine();
         Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
         if (equipeOpt.isPresent()) {
             Equipe equipe = equipeOpt.get();
             System.out.println("Retrait d'un joueur de l'équipe " + equipe.getNom());
-
-            equipeServices.retirerJoueur(id, equipe);
+            equipeServices.retirerJoueur(idjoueur, equipe);
             System.out.println("Joueur retiré de l'équipe.");
         } else {
             System.out.println("Équipe non trouvée.");

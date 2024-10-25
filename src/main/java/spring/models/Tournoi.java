@@ -52,7 +52,7 @@ public class Tournoi {
     @Column(nullable = false)
     private String statut;
 
-    @ManyToMany(mappedBy = "tournois")
+    @ManyToMany(mappedBy = "tournois", fetch = FetchType.EAGER)
     private List<Equipe> equipes;
 
     // Constructeur par défaut

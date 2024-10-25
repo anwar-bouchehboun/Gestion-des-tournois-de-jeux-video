@@ -16,10 +16,10 @@ public class Equipe {
     @Column(nullable = false)
     private String nom;
 
-    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "equipe",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Joueur> joueurs;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "equipe_tournoi",
         joinColumns = @JoinColumn(name = "equipe_id"),

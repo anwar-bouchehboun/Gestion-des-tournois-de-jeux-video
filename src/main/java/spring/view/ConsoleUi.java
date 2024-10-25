@@ -11,14 +11,16 @@ public class ConsoleUi {
     private final Equipeview equipeview;
     private final Jeuview jeuview;
     private  final Joueurview joueurview;
+    private final Tournoiview tournoiview;
 
     private final Scanner scanner;
 
 
-    public ConsoleUi( Equipeview equipeview,Jeuview jeuview,Joueurview joueurview ) {
+    public ConsoleUi( Equipeview equipeview,Jeuview jeuview,Joueurview joueurview,Tournoiview tournoiview ) {
         this.equipeview = equipeview;
         this.jeuview=jeuview;
-        this.joueurview=joueurview;
+        this.joueurview=joueurview;      
+        this.tournoiview=tournoiview;
         this.scanner = new Scanner(System.in);
 
     }
@@ -30,6 +32,7 @@ public class ConsoleUi {
             System.out.println("1. Menu équipe");
             System.out.println("2. Menu  Jeu");
             System.out.println("3. Menu  Joueur");
+            System.out.println("4. Menu  Tournoi");
 
             System.out.println("0. Quitter");
             System.out.print("Choisissez une option : ");
@@ -46,10 +49,10 @@ public class ConsoleUi {
                 case "3":
                     joueurview.menuJoueur();
                     break;
-             /*   case 4:
-
+             case "4":
+             tournoiview.afficherMenu();
                     break;
-                case 5:
+               /*    case 5:
 
                     break;
                 case 6:

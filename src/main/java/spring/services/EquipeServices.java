@@ -34,10 +34,10 @@ public class EquipeServices {
     }
 
     public void ajouterJoueur(Long id, Equipe equipe) {
-        equipeImp.ajouterJoueur(id, equipe);
+        equipeImp.ajouter(id, equipe);
     }
 
     public void retirerJoueur(Long id, Equipe equipe) {
-        equipeImp.retirerJoueur(id, equipe);
+        equipeImp.retirer(id, equipe);
     }
 }

@@ -82,11 +82,17 @@
   <bean id="jeuview" class="spring.view.Jeuview">
       <constructor-arg  ref="jeuServices"/>
   </bean>
+    <bean id="tournoiview" class="spring.view.Tournoiview">
+        <constructor-arg  ref="tournoiServices"/>
+        <constructor-arg ref="equipeServices"></constructor-arg>
+        <constructor-arg ref="jeuServices"></constructor-arg>
+    </bean>
 <!-- Consolui  -->
     <bean id="ConsoleUi" class="spring.view.ConsoleUi">
         <constructor-arg ref="equipeview"/>
-         <constructor-arg ref="jeuview"></constructor-arg>
-        <constructor-arg ref="joueurview"></constructor-arg>
+        <constructor-arg ref="jeuview"/>
+        <constructor-arg ref="joueurview"/>
+        <constructor-arg ref="tournoiview"/>
     </bean>
 
 
