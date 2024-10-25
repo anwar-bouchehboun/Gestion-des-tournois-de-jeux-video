@@ -34,7 +34,7 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">felse</prop>
             </props>
         </property>
@@ -60,7 +60,8 @@
     </bean>
     <bean id="jeuImp" class="spring.interfaces.impl.JeuImp">
     </bean>
-  <bean id="tournoiImp" class="spring.interfaces.impl.TournoiImp">
+  <bean id="tournoiMetier" class="spring.interfaces.impl.TournoiMetierImpl">
+
     </bean>
 
     <!-- Service beans -->
@@ -73,15 +74,19 @@
      <bean id="equipeview" class="spring.view.Equipeview">
          <constructor-arg  ref="equipeServices"/>
      </bean>
+    <bean id="joueurview" class="spring.view.Joueurview">
+        <constructor-arg ref="joueurServices"></constructor-arg>
+        <constructor-arg ref="equipeServices"></constructor-arg>
+
+    </bean>
   <bean id="jeuview" class="spring.view.Jeuview">
       <constructor-arg  ref="jeuServices"/>
-
   </bean>
 <!-- Consolui  -->
     <bean id="ConsoleUi" class="spring.view.ConsoleUi">
         <constructor-arg ref="equipeview"/>
          <constructor-arg ref="jeuview"></constructor-arg>
-
+        <constructor-arg ref="joueurview"></constructor-arg>
     </bean>
 
 

@@ -6,9 +6,9 @@ import spring.models.Tournoi;
 
 public class TournoiDaoImpl implements TournoiDao {
 
-    private final TournoiImp tournoiRepository;
+    private final TournoiMetierImpl tournoiRepository;
 
-    public TournoiDaoImpl(TournoiImp tournoiRepository) {
+    public TournoiDaoImpl(TournoiMetierImpl tournoiRepository) {
         this.tournoiRepository = tournoiRepository;
     }
 

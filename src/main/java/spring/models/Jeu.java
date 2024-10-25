@@ -26,7 +26,7 @@ public class Jeu {
     @Column(nullable = false)
     private int dureeMoyenne;
 
-    @OneToMany(mappedBy = "jeu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "jeu",fetch = FetchType.LAZY)
     private List<Tournoi> tournois;
     // Constructeur par défaut
     public Jeu() {}

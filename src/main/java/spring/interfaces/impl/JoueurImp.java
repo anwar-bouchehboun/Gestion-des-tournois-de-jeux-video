@@ -7,17 +7,13 @@ import spring.utilis.LoggerMessage;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
 public class JoueurImp implements GeneralInterface<Joueur> {
 
-
-     public JoueurImp(){
-
-     }
-
+    public JoueurImp() {
+    }
 
     @Override
     public Joueur creer(Joueur entity) {
@@ -25,23 +21,19 @@ public class JoueurImp implements GeneralInterface<Joueur> {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            if (em.contains(entity)) {
-                em.persist(entity);
-            } else {
-                em.merge(entity);
-            }
+            em.persist(entity);
             transaction.commit();
             LoggerMessage.info("Joueur Ajouter Succes" + entity.getId());
-
+            return entity;
         } catch (RuntimeException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LoggerMessage.error("Error Jouter :" +e.getMessage());
+            LoggerMessage.error("Error Jouter :" + e.getMessage());
+            throw e;
         } finally {
-            EntityManagerSingleton.closeEntityManagerFactory();
+            EntityManagerSingleton.closeEntityManager(em);
         }
-        return entity;
     }
 
     @Override
@@ -50,20 +42,19 @@ public class JoueurImp implements GeneralInterface<Joueur> {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.merge(entity);
+            entity = em.merge(entity);
             transaction.commit();
             LoggerMessage.info("Joueur modifier Succes" + entity.getId());
-
+            return entity;
         } catch (RuntimeException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LoggerMessage.error("Error Jouter :" +e.getMessage());
-
+            LoggerMessage.error("Error Jouter :" + e.getMessage());
+            throw e;
         } finally {
-            em.close(); 
+            EntityManagerSingleton.closeEntityManager(em);
         }
-        return entity;
     }
 
     @Override
@@ -84,37 +75,32 @@ public class JoueurImp implements GeneralInterface<Joueur> {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LoggerMessage.error("Error Jouter :" +e.getMessage());
-
+            LoggerMessage.error("Error Jouter :" + e.getMessage());
+            throw e;
         } finally {
-            EntityManagerSingleton.closeEntityManagerFactory();
+            EntityManagerSingleton.closeEntityManager(em);
         }
     }
 
     @Override
     public Optional<Joueur> trouverParId(Long id) {
-        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+        EntityManager em = EntityManagerSingleton.getEntityManager();
         try {
-            Joueur joueur = entityManager.find(Joueur.class, id);
+            Joueur joueur = em.find(Joueur.class, id);
             return Optional.ofNullable(joueur);
         } finally {
-            entityManager.close();
+            EntityManagerSingleton.closeEntityManager(em);
         }
-
-
     }
 
     @Override
     public List<Joueur> trouverTous() {
         EntityManager em = EntityManagerSingleton.getEntityManager();
         try {
-            Query query = em.createQuery("SELECT j FROM Joueur j", Joueur.class); 
-            return query.getResultList();
+            String jpql = "SELECT DISTINCT j FROM Joueur j LEFT JOIN FETCH j.equipe";
+            return em.createQuery(jpql, Joueur.class).getResultList();
         } finally {
-            EntityManagerSingleton.closeEntityManagerFactory();
+            EntityManagerSingleton.closeEntityManager(em);
         }
     }
-
-
-
 }

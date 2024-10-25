@@ -5,15 +5,15 @@ import spring.models.Tournoi;
 
 public class TournoiDaoExtension  implements TournoiDao {
 
-    private final TournoiImp tournoiRepository;
+    private final TournoiMetierImpl tournoiMetier;
 
-    public TournoiDaoExtension(TournoiImp tournoiRepository) {
-        this.tournoiRepository = tournoiRepository;
+    public TournoiDaoExtension(TournoiMetierImpl tournoiMetier) {
+        this.tournoiMetier = tournoiMetier;
     }
 
     @Override
     public int calculerdureeEstimeeTournoi(Long tournoiId) {
-        Tournoi tournoi = tournoiRepository.trouverParId(tournoiId)
+        Tournoi tournoi = tournoiMetier.trouverParId(tournoiId)
                 .orElseThrow(() -> new IllegalArgumentException("Tournoi not found"));
         int nombreEquipes = tournoi.getEquipes().size();
         int dureeMoyenneMatch = tournoi.getJeu().getDureeMoyenne();

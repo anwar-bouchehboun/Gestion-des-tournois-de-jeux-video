@@ -58,13 +58,13 @@ public class Joueur {
         this.equipe = equipe;
     }
 
+    public String afficherJoueur() {
+        String equipeNom = (equipe != null) ? equipe.getNom() : "Pas d'équipe";
+        return String.format("%-5d %-20s %-15d %-15s", id, pseudo, age, equipeNom);
+    }
+
     @Override
     public String toString() {
-        return "Joueur{" +
-                "id=" + id +
-                ", pseudo='" + pseudo + '\'' +
-                ", age=" + age +
-                ", equipe=" + equipe +
-                '}';
+        return afficherJoueur();
     }
 }

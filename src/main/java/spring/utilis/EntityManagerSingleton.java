@@ -12,12 +12,19 @@ public class EntityManagerSingleton {
         try {
             factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         } catch (Throwable ex) {
-         LoggerMessage.error("Initial EntityManagerFactory creation failed." + ex);
+            LoggerMessage.error("Initial EntityManagerFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
     public static EntityManager getEntityManager() {
         return factory.createEntityManager();
+    }
+
+    public static void closeEntityManager(EntityManager em) {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
     }
 
     public static void closeEntityManagerFactory() {
