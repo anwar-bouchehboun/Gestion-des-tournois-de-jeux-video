@@ -20,9 +20,6 @@ public class JeuServices {
         return jeuImp.modifier(jeu);
     }
 
-    public void supprimerJeu(Long id) {
-        jeuImp.supprimer(id);
-    }
 
     public Optional<Jeu> trouverJeuParId(Long id) {
         return jeuImp.trouverParId(id);

@@ -48,46 +48,63 @@
     <tx:annotation-driven/>
 
     <!-- Entity beans -->
-    <bean id="joueur" class="spring.models.Joueur"/>
-    <bean id="equipe" class="spring.models.Equipe"/>
-    <bean id="jeu" class="spring.models.Jeu"/>
-    <bean id="tournoi" class="spring.models.Tournoi"/>
+    <bean id="joueur" class="spring.models.Joueur" scope="prototype"/>
+    <bean id="equipe" class="spring.models.Equipe" scope="prototype"/>
+    <bean id="jeu" class="spring.models.Jeu" scope="prototype"/>
+    <bean id="tournoi" class="spring.models.Tournoi" scope="prototype"/>
 
     <!-- Repository beans -->
-    <bean id="joueurImp" class="spring.interfaces.impl.JoueurImp">
-    </bean>
-    <bean id="equipeImp" class="spring.interfaces.impl.EquipeImp">
-    </bean>
-    <bean id="jeuImp" class="spring.interfaces.impl.JeuImp">
-    </bean>
-  <bean id="tournoiMetier" class="spring.interfaces.impl.TournoiMetierImpl">
+    <bean id="joueurImp" class="spring.interfaces.impl.JoueurImp"/>
+    <bean id="equipeImp" class="spring.interfaces.impl.EquipeImp"/>
+    <bean id="jeuImp" class="spring.interfaces.impl.JeuImp"/>
 
+    <!-- TournoiMetierImpl bean -->
+    <bean id="tournoiMetier" class="spring.interfaces.impl.TournoiMetierImpl">
+      <!--  <property name="tournoiDaoExtension" ref="tournoiDaoExtension"/>-->
+        <property name="tournoiDaoImpl" ref="tournoiDaoImpl"></property>
+    </bean>
+
+    <!-- TournoiDaoExtension bean -->
+    <bean id="tournoiDaoExtension" class="spring.interfaces.impl.TournoiDaoExtension">
+        <constructor-arg ref="tournoiMetier"/>
+    </bean>
+
+    <!-- TournoiDaoImpl bean -->
+    <bean id="tournoiDaoImpl" class="spring.interfaces.impl.TournoiDaoImpl">
+        <constructor-arg ref="tournoiMetier"/>
     </bean>
 
     <!-- Service beans -->
-    <bean id="equipeServices" class="spring.services.EquipeServices">
-    </bean>
+    <bean id="equipeServices" class="spring.services.EquipeServices"/>
     <bean id="jeuServices" class="spring.services.JeuServices"/>
     <bean id="joueurServices" class="spring.services.JoueurServices"/>
-    <bean id="tournoiServices" class="spring.services.TournoiServices"/>
-    <!-- view  -->
-     <bean id="equipeview" class="spring.view.Equipeview">
-         <constructor-arg  ref="equipeServices"/>
-     </bean>
-    <bean id="joueurview" class="spring.view.Joueurview">
-        <constructor-arg ref="joueurServices"></constructor-arg>
-        <constructor-arg ref="equipeServices"></constructor-arg>
-
+    <bean id="tournoiServices" class="spring.services.TournoiServices">
+        <constructor-arg ref="tournoiMetier"/>
     </bean>
-  <bean id="jeuview" class="spring.view.Jeuview">
-      <constructor-arg  ref="jeuServices"/>
-  </bean>
-<!-- Consolui  -->
+
+    <!-- View beans -->
+    <bean id="equipeview" class="spring.view.Equipeview">
+        <constructor-arg ref="equipeServices"/>
+    </bean>
+    <bean id="joueurview" class="spring.view.Joueurview">
+        <constructor-arg ref="joueurServices"/>
+        <constructor-arg ref="equipeServices"/>
+    </bean>
+    <bean id="jeuview" class="spring.view.Jeuview">
+        <constructor-arg ref="jeuServices"/>
+    </bean>
+    <bean id="tournoiview" class="spring.view.Tournoiview">
+        <constructor-arg ref="tournoiServices"/>
+        <constructor-arg ref="equipeServices"/>
+        <constructor-arg ref="jeuServices"/>
+    </bean>
+
+    <!-- ConsoleUi bean -->
     <bean id="ConsoleUi" class="spring.view.ConsoleUi">
         <constructor-arg ref="equipeview"/>
-         <constructor-arg ref="jeuview"></constructor-arg>
-        <constructor-arg ref="joueurview"></constructor-arg>
+        <constructor-arg ref="jeuview"/>
+        <constructor-arg ref="joueurview"/>
+        <constructor-arg ref="tournoiview"/>
     </bean>
-
 
 </beans>

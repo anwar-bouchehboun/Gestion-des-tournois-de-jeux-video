@@ -2,15 +2,17 @@ package spring.interfaces.impl;
 
 import spring.interfaces.GeneralInterface;
 import spring.models.Jeu;
+import spring.models.Tournoi;
 import spring.utilis.EntityManagerSingleton;
+import spring.utilis.LoggerMessage;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
 public class JeuImp implements GeneralInterface<Jeu> {
-
 
     public JeuImp() {
 
@@ -40,15 +42,31 @@ public class JeuImp implements GeneralInterface<Jeu> {
 
     @Override
     public void supprimer(Long id) {
-        EntityManager em = EntityManagerSingleton.getEntityManager();
+      /*  EntityManager em = EntityManagerSingleton.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        Jeu entity = em.find(Jeu.class, id);
-        if (entity != null) {
-            em.remove(entity);
-        }
-        transaction.commit();
-        em.close();
+        try {
+            transaction.begin();
+            Jeu jeu = em.find(Jeu.class, id);
+            if (jeu != null) {
+                TypedQuery<Tournoi> query = em.createQuery("SELECT t FROM Tournoi t WHERE t.jeu = :jeu", Tournoi.class);
+                query.setParameter("jeu", jeu);
+                List<Tournoi> tournois = query.getResultList();
+                for (Tournoi tournoi : tournois) {
+                    tournoi.setJeu(null);
+                    em.merge(tournoi);
+                }
+                jeu.setTournois(null);
+                em.merge(jeu);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+          LoggerMessage.error("Error updating Jeu associations: " + e.getMessage());
+        } finally {
+            em.close();
+        }*/
     }
 
     @Override

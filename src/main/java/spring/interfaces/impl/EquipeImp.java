@@ -11,17 +11,14 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
-public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface<Equipe> {
-
-
- 
+public class EquipeImp implements GeneralInterface<Equipe>, OperationInteraface<Equipe> {
 
     public EquipeImp() {
     }
 
     @Override
     public Equipe creer(Equipe entity) {
-        EntityManager entityManager = EntityManagerSingleton.getEntityManager(); 
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -100,16 +97,15 @@ public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface
     public List<Equipe> trouverTous() {
         EntityManager em = EntityManagerSingleton.getEntityManager();
         try {
-          List<Equipe> query= em.createQuery("SELECT e FROM Equipe e", Equipe.class).getResultList();
+            List<Equipe> query = em.createQuery("SELECT e FROM Equipe e", Equipe.class).getResultList();
             return query;
         } finally {
             em.close();
         }
     }
 
-
     @Override
-    public void ajouterJoueur(Long joueurId, Equipe equipe) {
+    public void ajouter(Long joueurId, Equipe equipe) {
         EntityManager entityManager = EntityManagerSingleton.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -117,8 +113,7 @@ public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface
             Joueur joueur = entityManager.find(Joueur.class, joueurId);
             if (joueur != null) {
                 joueur.setEquipe(equipe);
-                equipe.getJoueurs().add(joueur);
-                entityManager.merge(equipe);
+                entityManager.merge(joueur);
                 LoggerMessage.info("Joueur ajouté à l'équipe: " + joueurId);
             } else {
                 LoggerMessage.warn("Joueur non trouvé avec l'ID: " + joueurId);
@@ -135,15 +130,14 @@ public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface
     }
 
     @Override
-    public void retirerJoueur(Long joueurId, Equipe equipe) {
+    public void retirer(Long joueurId, Equipe equipe) {
         EntityManager entityManager = EntityManagerSingleton.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
             Joueur joueur = entityManager.find(Joueur.class, joueurId);
-            if (joueur != null && equipe.getJoueurs().contains(joueur)) {
+            if (joueur != null ) {
                 joueur.setEquipe(null);
-                equipe.getJoueurs().remove(joueur);
                 entityManager.merge(equipe);
                 LoggerMessage.info("Joueur retiré de l'équipe: " + joueurId);
             } else {
@@ -159,7 +153,5 @@ public class EquipeImp implements GeneralInterface<Equipe> , OperationInteraface
             entityManager.close();
         }
     }
-
-    
 
 }

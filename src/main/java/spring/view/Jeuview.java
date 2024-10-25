@@ -24,9 +24,8 @@ public class Jeuview {
             System.out.println("Menu Principal:");
             System.out.println("1. Créer un jeu");
             System.out.println("2. Modifier un jeu");
-            System.out.println("3. Supprimer un jeu");
-            System.out.println("4. Trouver un jeu par ID");
-            System.out.println("5. Afficher tous les jeux");
+            System.out.println("3. Trouver un jeu par ID");
+            System.out.println("4. Afficher tous les jeux");
             System.out.println("0. Quitter");
             System.out.print("Entrez votre choix: ");
             choix = scanner.nextInt();
@@ -39,10 +38,8 @@ public class Jeuview {
                 case 2:
                     modifierJeu();
                     break;
+
                 case 3:
-                    supprimerJeu();
-                    break;
-                case 4:
                     trouverJeuParId();
                     break;
                 case 5:
@@ -98,12 +95,7 @@ public class Jeuview {
         System.out.println("Jeu modifié avec succès.");
     }
 
-    private void supprimerJeu() {
-        System.out.print("Entrez l'ID du jeu à supprimer: ");
-        Long id = scanner.nextLong();
-        jeuServices.supprimerJeu(id);
-        System.out.println("Jeu supprimé avec succès.");
-    }
+
 
     private void trouverJeuParId() {
         System.out.print("Entrez l'ID du jeu à trouver: ");
