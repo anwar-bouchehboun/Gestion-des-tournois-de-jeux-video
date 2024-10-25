@@ -17,7 +17,7 @@ public class Tournoi {
     @Column(nullable = false)
     private String titre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "jeu_id", nullable = false)
     private Jeu jeu;
 
