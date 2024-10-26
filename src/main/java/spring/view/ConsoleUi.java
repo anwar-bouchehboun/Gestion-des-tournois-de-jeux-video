@@ -29,10 +29,11 @@ public class ConsoleUi {
     public void start(){
         while (true) {
             System.out.println("\n--- Menu Principal ---");
-            System.out.println("1. Menu équipe");
-            System.out.println("2. Menu  Jeu");
-            System.out.println("3. Menu  Joueur");
-            System.out.println("4. Menu  Tournoi");
+            System.out.println("1.  Gérer les équipes");
+            System.out.println("2. Gérer les Jeu");
+            System.out.println("3.Gérer les joueurs");
+            System.out.println("4. Gérer les tournois");
+       
 
             System.out.println("0. Quitter");
             System.out.print("Choisissez une option : ");

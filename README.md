@@ -101,9 +101,9 @@ Un menu console permet d'interagir avec l'application pour :
 L'application se lance avec un menu en console pour interagir avec les différentes fonctionnalités.
 
 ```bash
-1. Gérer les joueurs
-2. Gérer les équipes
-3. Gérer les tournois
-4. Calculer la durée estimée d'un tournoi
+1. Gérer les équipes
+2. Gérer les jeu
+3. Gérer les joueurs
+4. Gérer les tournois
 5. Quitter
 ```
