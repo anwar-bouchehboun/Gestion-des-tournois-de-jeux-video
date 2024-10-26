@@ -2,6 +2,7 @@ package spring.view;
 
 import spring.models.Equipe;
 import spring.services.EquipeServices;
+import spring.utilis.PattrenUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,6 @@ public class ConsoleUi {
     private  final Joueurview joueurview;
     private final Tournoiview tournoiview;
 
-    private final Scanner scanner;
 
 
     public ConsoleUi( Equipeview equipeview,Jeuview jeuview,Joueurview joueurview,Tournoiview tournoiview ) {
@@ -21,7 +21,6 @@ public class ConsoleUi {
         this.jeuview=jeuview;
         this.joueurview=joueurview;      
         this.tournoiview=tournoiview;
-        this.scanner = new Scanner(System.in);
 
     }
 
@@ -33,12 +32,9 @@ public class ConsoleUi {
             System.out.println("2. Gérer les Jeu");
             System.out.println("3.Gérer les joueurs");
             System.out.println("4. Gérer les tournois");
-       
-
             System.out.println("0. Quitter");
-            System.out.print("Choisissez une option : ");
 
-            String choix = scanner.nextLine();
+            String choix = PattrenUtils.getStringInput("Choisissez une option :")
 
             switch (choix) {
                 case "1":
@@ -53,14 +49,6 @@ public class ConsoleUi {
              case "4":
              tournoiview.afficherMenu();
                     break;
-               /*    case 5:
-
-                    break;
-                case 6:
-
-                    break;
-                case 7:
-                    break;*/
                 case "0":
                     System.out.println("Au revoir !");
                     return;
