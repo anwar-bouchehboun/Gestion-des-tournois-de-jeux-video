@@ -26,7 +26,7 @@ public class Jeu {
     @Column(nullable = false)
     private int dureeMoyenne;
 
-    @OneToMany(mappedBy = "jeu",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jeu",fetch = FetchType.EAGER)
     private List<Tournoi> tournois;
     // Constructeur par défaut
     public Jeu() {}

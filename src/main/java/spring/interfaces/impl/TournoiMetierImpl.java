@@ -22,11 +22,12 @@ public class TournoiMetierImpl implements TournoiMetier, GeneralInterface<Tourno
   /*  public void setTournoiDaoExtension(TournoiDaoExtension tournoiDaoExtension) {
         this.tournoiDaoExtension = tournoiDaoExtension;
     }*/
-    public void settournoiDaoImpl(TournoiDaoImpl tournoiDaoImpl) {
+
+
+    public void setTournoiDaoImpl(TournoiDaoImpl tournoiDaoImpl) {
         this.tournoiDaoImpl = tournoiDaoImpl;
+
     }
-
-
 
 
 
@@ -182,5 +183,6 @@ public class TournoiMetierImpl implements TournoiMetier, GeneralInterface<Tourno
             EntityManagerSingleton.closeEntityManager(em);
         }
     }
+
 
 }

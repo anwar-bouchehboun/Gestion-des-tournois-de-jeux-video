@@ -4,6 +4,7 @@ import spring.models.Equipe;
 import spring.models.Joueur;
 import spring.services.JoueurServices;
 import spring.services.EquipeServices;
+import spring.utilis.PattrenUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,16 +64,15 @@ public class Joueurview {
 
     private void creerJoueur() {
         System.out.println("--- Création d'un nouveau joueur ---");
-        System.out.print("Pseudo : ");
-        String pseudo = scanner.nextLine();
 
-        System.out.print("Âge : ");
-        int age = scanner.nextInt();
-        scanner.nextLine();
+        String pseudo = PattrenUtils.getStringInput("Pseudo : ");
+
+
+
+        int age = PattrenUtils.getIntInput("Age :");
 
         System.out.print("ID de l'équipe (0 si pas d'équipe) : ");
-        long equipeId = scanner.nextLong();
-        scanner.nextLine();
+        long equipeId = PattrenUtils.getLongInput("ID de l'équipe (0 si pas d'équipe) :");
 
         Joueur nouveauJoueur = new Joueur();
         nouveauJoueur.setPseudo(pseudo);
@@ -83,7 +83,7 @@ public class Joueurview {
             if (equipeOptional.isPresent()) {
                 nouveauJoueur.setEquipe(equipeOptional.get());
             } else {
-                System.out.println("Équipe non trouvée. Le joueur sera créé sans équipe.");
+                nouveauJoueur.setEquipe(null);
             }
         }
 
@@ -93,31 +93,24 @@ public class Joueurview {
 
     private void modifierJoueur() {
         System.out.println("--- Modification d'un joueur ---");
-        System.out.print("ID du joueur à modifier : ");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
+        Long id = PattrenUtils.getLongInput("ID du joueur à modifier : ");
 
         Optional<Joueur> joueurOptional = joueurServices.trouverJoueurParId(id);
         if (joueurOptional.isPresent()) {
             Joueur joueur = joueurOptional.get();
             System.out.println("Joueur trouvé : " + joueur);
 
-            System.out.print("Nouveau pseudo (laisser vide pour ne pas modifier) : ");
-            String pseudo = scanner.nextLine();
+            String pseudo = PattrenUtils.getStringInput("Nouveau pseudo (laisser vide pour ne pas modifier) : ");
             if (!pseudo.isEmpty()) {
                 joueur.setPseudo(pseudo);
             }
 
-            System.out.print("Nouvel âge (0 pour ne pas modifier) : ");
-            int age = scanner.nextInt();
-            scanner.nextLine();
+            int age = PattrenUtils.getIntInput("Nouvel âge (0 pour ne pas modifier) : ");
             if (age != 0) {
                 joueur.setAge(age);
             }
 
-            System.out.print("Nouvel ID d'équipe (0 pour retirer de l'équipe, -1 pour ne pas modifier) : ");
-            long equipeId = scanner.nextLong();
-            scanner.nextLine();
+            long equipeId = PattrenUtils.getLongInput("Nouvel ID d'équipe (0 pour retirer de l'équipe, -1 pour ne pas modifier) : ");
             if (equipeId == 0) {
                 joueur.setEquipe(null);
             } else if (equipeId > 0) {
@@ -138,10 +131,7 @@ public class Joueurview {
 
     private void supprimerJoueur() {
         System.out.println("--- Suppression d'un joueur ---");
-        System.out.print("ID du joueur à supprimer : ");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
-
+        Long id = PattrenUtils.getLongInput("ID du joueur à supprimer :");
         joueurServices.supprimerJoueur(id);
         System.out.println("Joueur supprimé avec succès (si existant).");
     }
