@@ -1,29 +1,26 @@
 package spring.view;
 
-import spring.interfaces.impl.TournoiDaoImpl;
 import spring.models.Tournoi;
 import spring.models.Equipe;
 import spring.models.Jeu;
 import spring.services.TournoiServices;
 import spring.services.EquipeServices;
 import spring.services.JeuServices;
+import spring.utilis.DateUtils;
+import spring.utilis.PattrenUtils;
 
 import java.util.List;
-import java.util.Scanner;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Tournoiview {
     private final TournoiServices tournoiServices;
     private  final  EquipeServices equipeServices;
     private final JeuServices jeuServices;
-    private final Scanner scanner;
 
     public Tournoiview(TournoiServices tournoiServices, EquipeServices equipeServices, JeuServices jeuServices) {
         this.tournoiServices = tournoiServices;
         this.jeuServices = jeuServices;
         this.equipeServices=equipeServices;
-        this.scanner = new Scanner(System.in);
     }
 
     public void afficherMenu() {
@@ -40,8 +37,8 @@ public class Tournoiview {
             System.out.println("0. Créer principal");
             System.out.print("Choix : ");
 
-            int choix = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            int choix = PattrenUtils.getIntInput(" Entre Choix : ");
+
 
             switch (choix) {
                 case 1: creerTournoi(); break;
@@ -51,7 +48,9 @@ public class Tournoiview {
                 case 5: retirerEquipeDuTournoi(); break;
                 case 6: afficherEquipesDuTournoi(); break;
                 case 7: obtenirDureeEstimeeTournoi(); break;
-                case 0: return;
+                case 0:
+                    System.out.println("return Menu Prncipal ");
+                    return;
                 default: System.out.println("Choix invalide. Veuillez réessayer.");
             }
         }
@@ -59,35 +58,28 @@ public class Tournoiview {
 
     private void creerTournoi() {
         System.out.println("Création d'un nouveau tournoi");
-        System.out.print("Titre du tournoi : ");
-        String titre = scanner.nextLine();
+        String titre = PattrenUtils.getStringInput("Titre du tournoi : ");
         
-        System.out.print("ID du jeu : ");
-        Long jeuId = scanner.nextLong();
-        scanner.nextLine(); 
+        Long jeuId = PattrenUtils.getLongInput("ID du jeu :");
+
         Jeu jeu = jeuServices.trouverJeuParId(jeuId).orElse(null);
         if (jeu == null) {
             System.out.println("Jeu non trouvé. Création du tournoi annulée.");
             return;
         }
 
-        System.out.print("Date de début (YYYY-MM-DD) : ");
-        LocalDate dateDebut = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
-        System.out.print("Date de fin (YYYY-MM-DD) : ");
-        LocalDate dateFin = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate dateDebut = DateUtils.getDateInput("Date de début (dd/MM/yyyy) : ");
+        LocalDate dateFin = DateUtils.getDateInput("Date de fin (dd/MM/yyyy) :");
 
-        System.out.print("Nombre de spectateurs : ");
-        int nombreSpectateurs = scanner.nextInt();
-        System.out.print("Durée estimée (en minutes) : ");
-        int dureeEstimee = scanner.nextInt();
-        System.out.print("Temps de pause (en minutes) : ");
-        int tempsPause = scanner.nextInt();
-        System.out.print("Temps de cérémonie (en minutes) : ");
-        int tempsCeremonie = scanner.nextInt();
-        scanner.nextLine(); 
 
-        System.out.print("Statut : ");
-        String statut = scanner.nextLine();
+        int nombreSpectateurs = PattrenUtils.getIntInput("Nombre de spectateurs :");
+        int dureeEstimee =PattrenUtils.getIntInput("Durée estimée (en minutes) :");
+        int tempsPause = PattrenUtils.getIntInput("Temps de pause (en minutes) :");
+        int tempsCeremonie = PattrenUtils.getIntInput("Temps de cérémonie (en minutes) : ");
+
+
+
+        String statut = PattrenUtils.getStringInput("Quel type de Status voulez-vous ajouter ? (1.PLANIFIE, 2.EN_COURS,3.TERMINE,4.ANNULE");
 
         Tournoi nouveauTournoi = new Tournoi();
         nouveauTournoi.setTitre(titre);
@@ -105,25 +97,23 @@ public class Tournoiview {
     }
 
     private void modifierTournoi() {
-        System.out.print("ID du tournoi à modifier : ");
-        Long id = scanner.nextLong();
-        scanner.nextLine(); // Consume newline
 
+        Long id = PattrenUtils.getLongInput("ID du tournoi à modifier :");
         Tournoi tournoi = tournoiServices.trouverTournoiParId(id).orElse(null);
         if (tournoi == null) {
             System.out.println("Tournoi non trouvé.");
             return;
         }
 
-        System.out.print("Nouveau titre (laisser vide pour ne pas changer) : ");
-        String titre = scanner.nextLine();
+
+        String titre = PattrenUtils.getStringInput("Nouveau titre (laisser vide pour ne pas changer) :");
         if (!titre.isEmpty()) {
             tournoi.setTitre(titre);
         }
 
-        System.out.print("Nouvel ID du jeu (0 pour ne pas changer) : ");
-        Long jeuId = scanner.nextLong();
-        scanner.nextLine();
+        Long jeuId = PattrenUtils.getLongInput("Nouvel ID du jeu (0 pour ne pas changer) :");
+
+
         if (jeuId != 0) {
             Jeu jeu = jeuServices.trouverJeuParId(jeuId).orElse(null);
             if (jeu != null) {
@@ -133,45 +123,43 @@ public class Tournoiview {
             }
         }
 
-        System.out.print("Nouvelle date de début (YYYY-MM-DD, laisser vide pour ne pas changer) : ");
-        String dateDebutStr = scanner.nextLine();
-        if (!dateDebutStr.isEmpty()) {
-            tournoi.setDateDebut(LocalDate.parse(dateDebutStr, DateTimeFormatter.ISO_LOCAL_DATE));
-        }
 
-        System.out.print("Nouvelle date de fin (YYYY-MM-DD, laisser vide pour ne pas changer) : ");
-        String dateFinStr = scanner.nextLine();
-        if (!dateFinStr.isEmpty()) {
-            tournoi.setDateFin(LocalDate.parse(dateFinStr, DateTimeFormatter.ISO_LOCAL_DATE));
-        }
+        LocalDate dateDebutStr = DateUtils.getDateInput("Nouvelle date de début ((dd/MM/yyyy), laisser vide pour ne pas changer) : ");
 
-        System.out.print("Nouveau nombre de spectateurs (0 pour ne pas changer) : ");
-        int nombreSpectateurs = scanner.nextInt();
+
+            tournoi.setDateDebut(dateDebutStr);
+
+
+        LocalDate dateFinStr = DateUtils.getDateInput("\"Nouvelle date de fin ((dd/MM/yyyy), laisser vide pour ne pas changer) :");
+            tournoi.setDateFin(dateFinStr);
+
+
+
+        int nombreSpectateurs = PattrenUtils.getIntInput("Nouveau nombre de spectateurs (0 pour ne pas changer) :");
         if (nombreSpectateurs != 0) {
             tournoi.setNombreSpectateurs(nombreSpectateurs);
         }
 
-        System.out.print("Nouvelle durée estimée (0 pour ne pas changer) : ");
-        int dureeEstimee = scanner.nextInt();
+        int dureeEstimee =PattrenUtils.getIntInput("Nouvelle durée estimée (0 pour ne pas changer) :");
         if (dureeEstimee != 0) {
             tournoi.setDureeEstimee(dureeEstimee);
         }
 
-        System.out.print("Nouveau temps de pause (0 pour ne pas changer) : ");
-        int tempsPause = scanner.nextInt();
+
+        int tempsPause = PattrenUtils.getIntInput("Nouveau temps de pause (0 pour ne pas changer) : ");
         if (tempsPause != 0) {
             tournoi.setTempsPause(tempsPause);
         }
 
-        System.out.print("Nouveau temps de cérémonie (0 pour ne pas changer) : ");
-        int tempsCeremonie = scanner.nextInt();
+
+        int tempsCeremonie = PattrenUtils.getIntInput("Nouveau temps de cérémonie (0 pour ne pas changer) :");
         if (tempsCeremonie != 0) {
             tournoi.setTempsCeremonie(tempsCeremonie);
         }
-        scanner.nextLine(); // Consume newline
+
 
         System.out.print("Nouveau statut (laisser vide pour ne pas changer) : ");
-        String statut = scanner.nextLine();
+        String statut = PattrenUtils.getStringInput("Nouveau statut (laisser vide pour ne pas changer) : (1.PLANIFIE, 2.EN_COURS,3.TERMINE,4.ANNULE");
         if (!statut.isEmpty()) {
             tournoi.setStatut(statut);
         }
@@ -213,11 +201,11 @@ public class Tournoiview {
     }
 
     private void ajouterEquipeAuTournoi() {
-        System.out.print("ID du tournoi : ");
-        Long tournoiId = scanner.nextLong();
-        System.out.print("ID de l'équipe à ajouter : ");
-        Long equipeId = scanner.nextLong();
-        scanner.nextLine();
+
+        Long tournoiId = PattrenUtils.getLongInput("ID du tournoi :");
+
+        Long equipeId = PattrenUtils.getLongInput("ID de l'équipe à ajouter : ");
+
 
         Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
         Equipe equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
@@ -231,11 +219,10 @@ public class Tournoiview {
     }
 
     private void retirerEquipeDuTournoi() {
-        System.out.print("ID du tournoi : ");
-        Long tournoiId = scanner.nextLong();
-        System.out.print("ID de l'équipe à retirer : ");
-        Long equipeId = scanner.nextLong();
-        scanner.nextLine();
+        Long tournoiId = PattrenUtils.getLongInput("ID du tournoi :");
+
+        Long equipeId = PattrenUtils.getLongInput("ID de l'équipe à Retier : ");
+
         Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
         Equipe equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
         if (tournoi == null || equipe==null) {
@@ -247,9 +234,7 @@ public class Tournoiview {
     }
 
     private void afficherEquipesDuTournoi() {
-        System.out.print("ID du tournoi : ");
-        Long tournoiId = scanner.nextLong();
-        scanner.nextLine();
+        Long tournoiId = PattrenUtils.getLongInput("ID du tournoi :");
 
         Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
         if (tournoi == null) {
@@ -269,9 +254,8 @@ public class Tournoiview {
     }
 
     private void obtenirDureeEstimeeTournoi() {
-        System.out.print("ID du tournoi : ");
-        Long tournoiId = scanner.nextLong();
-        scanner.nextLine();
+        Long tournoiId = PattrenUtils.getLongInput("ID du tournoi :");
+
         Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
         if (tournoi == null) {
             System.out.println("Tournoi non trouvé.");
