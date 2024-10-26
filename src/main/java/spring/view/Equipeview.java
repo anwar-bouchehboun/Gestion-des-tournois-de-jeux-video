@@ -12,11 +12,9 @@ import java.util.Scanner;
 public class Equipeview {
 
     private final EquipeServices equipeServices;
-    private final Scanner scanner;
 
     public Equipeview(EquipeServices equipeServices) {
         this.equipeServices = equipeServices;
-        this.scanner = new Scanner(System.in);
 
     }
 

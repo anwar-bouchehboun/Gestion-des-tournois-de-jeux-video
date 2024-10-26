@@ -15,12 +15,10 @@ public class Joueurview {
 
     private final JoueurServices joueurServices;
     private final EquipeServices equipeServices;
-    private final Scanner scanner;
 
     public Joueurview(JoueurServices joueurServices, EquipeServices equipeServices) {
         this.joueurServices = joueurServices;
         this.equipeServices = equipeServices;
-        this.scanner = new Scanner(System.in);
     }
 
     public void menuJoueur() {
@@ -33,9 +31,8 @@ public class Joueurview {
             System.out.println("4. Trouver un joueur par ID");
             System.out.println("5. Afficher tous les joueurs");
             System.out.println("0. Retour au menu principal");
-            System.out.print("Votre choix : ");
-            choix = scanner.nextInt();
-            scanner.nextLine();
+            choix = PattrenUtils.getIntInput("Votre choix : ");
+
 
             switch (choix) {
                 case 1:
@@ -55,11 +52,11 @@ public class Joueurview {
                     break;
                 case 0:
                     System.out.println("Retour au menu principal...");
-                    break;
+                   return;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");
             }
-        } while (choix != 0);
+        } while (true);
     }
 
     private void creerJoueur() {
@@ -71,7 +68,6 @@ public class Joueurview {
 
         int age = PattrenUtils.getIntInput("Age :");
 
-        System.out.print("ID de l'équipe (0 si pas d'équipe) : ");
         long equipeId = PattrenUtils.getLongInput("ID de l'équipe (0 si pas d'équipe) :");
 
         Joueur nouveauJoueur = new Joueur();
@@ -138,9 +134,7 @@ public class Joueurview {
 
     private void trouverJoueurParId() {
         System.out.println("--- Recherche d'un joueur par ID ---");
-        System.out.print("ID du joueur : ");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
+        Long id = PattrenUtils.getLongInput("ID du joueur :");
 
         Optional<Joueur> joueurOptional = joueurServices.trouverJoueurParId(id);
         if (joueurOptional.isPresent()) {

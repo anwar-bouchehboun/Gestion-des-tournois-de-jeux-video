@@ -45,18 +45,7 @@ public class PattrenUtils {
     }
 
 
-    public static int getStutsType() {
-        while (true) {
-            System.out.println("Quel type de Status voulez-vous ajouter ? (1.PLANIFIE, 2.EN_COURS,3.TERMINE,4.ANNULE");
 
-            String input = scanner.nextLine().trim();
-            if (Pattern.matches("[1234]", input)) {
-                return Integer.parseInt(input);
-            } else {
-                System.out.println("Type de Status invalide. Veuillez entrer 1 , 2 ,3 ou 4 ");
-            }
-        }
-    }
 
 
 
