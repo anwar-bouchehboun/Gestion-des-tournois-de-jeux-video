@@ -34,7 +34,7 @@ public class ConsoleUi {
             System.out.println("4. Gérer les tournois");
             System.out.println("0. Quitter");
 
-            String choix = PattrenUtils.getStringInput("Choisissez une option :")
+            String choix = PattrenUtils.getStringInput("Choisissez une option :");
 
             switch (choix) {
                 case "1":
