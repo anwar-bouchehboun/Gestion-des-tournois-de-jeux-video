@@ -7,15 +7,17 @@ import spring.utilis.PattrenUtils;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
+
 
 public class Equipeview {
 
     private final EquipeServices equipeServices;
+    private Equipe equipe;
 
-    public Equipeview(EquipeServices equipeServices) {
+
+    public Equipeview(EquipeServices equipeServices, Equipe equipe) {
         this.equipeServices = equipeServices;
-
+        this.equipe=equipe;
     }
 
     public void StartEquipe() {
@@ -71,10 +73,9 @@ public class Equipeview {
         System.out.println("Création d'une nouvelle équipe");
         String nom = PattrenUtils.getStringInput("Nom de l'équipe : ");
         int classment = PattrenUtils.getIntInput("Classment de l'équipe : ");
-        Equipe nouvelleEquipe = new Equipe();
-        nouvelleEquipe.setNom(nom);
-        nouvelleEquipe.setClassement(classment);
-        Equipe equipeCreee = equipeServices.creerEquipe(nouvelleEquipe);
+        equipe.setNom(nom);
+        equipe.setClassement(classment);
+        Equipe equipeCreee = equipeServices.creerEquipe(equipe);
         System.out.println("Équipe créée avec l'ID : " + equipeCreee.getId());
     }
 
@@ -83,7 +84,7 @@ public class Equipeview {
         Long id = PattrenUtils.getLongInput("ID de l'équipe à modifier :");
         Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
         if (equipeOpt.isPresent()) {
-            Equipe equipe = equipeOpt.get();
+            equipe = equipeOpt.get();
             String nouveauNom = PattrenUtils.getStringInput("Nouveau nom  de l'équipe : ");
             int classment = PattrenUtils.getIntInput("Classment de l'équipe : ");
             equipe.setClassement(classment);
@@ -105,7 +106,7 @@ public class Equipeview {
         Long id = PattrenUtils.getLongInput("ID de l'équipe à trouver :");
         Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
         if (equipeOpt.isPresent()) {
-            Equipe equipe = equipeOpt.get();
+            equipe = equipeOpt.get();
             System.out.printf("Équipe trouvée : " + equipe.getNom(),"Classment "+ equipe.getClassement());
         } else {
             System.out.println("Équipe non trouvée.");
@@ -130,7 +131,7 @@ public class Equipeview {
             Long idjoueur = PattrenUtils.getLongInput("ID de Joueur à Ajouter  :");
             Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
             if (equipeOpt.isPresent()) {
-                Equipe equipe = equipeOpt.get();
+                equipe = equipeOpt.get();
                 System.out.println("Ajout d'un joueur à l'équipe " + equipe.getNom());
                 equipeServices.ajouterJoueur(idjoueur, equipe);
                 System.out.println("Joueur ajouté avec succès.");
@@ -145,11 +146,11 @@ public class Equipeview {
 
     private void retirerJoueur() {
 
-        Long id = PattrenUtils.getLongInput("ID de l'équipe à Ajouter  :");;
-        Long idjoueur = PattrenUtils.getLongInput("ID de Joueur à Ajouter  :");
+        Long id = PattrenUtils.getLongInput("ID de l'équipe   :");;
+        Long idjoueur = PattrenUtils.getLongInput("ID de Joueur à Retier  :");
         Optional<Equipe> equipeOpt = equipeServices.trouverEquipeParId(id);
         if (equipeOpt.isPresent()) {
-            Equipe equipe = equipeOpt.get();
+          equipe = equipeOpt.get();
             System.out.println("Retrait d'un joueur de l'équipe " + equipe.getNom());
             equipeServices.retirerJoueur(idjoueur, equipe);
             System.out.println("Joueur retiré de l'équipe.");

@@ -1,12 +1,9 @@
 package spring.view;
 
-import spring.models.Equipe;
-import spring.services.EquipeServices;
+
 import spring.utilis.PattrenUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+
 
 public class ConsoleUi {
     private final Equipeview equipeview;
@@ -28,9 +25,9 @@ public class ConsoleUi {
     public void start(){
         while (true) {
             System.out.println("\n--- Menu Principal ---");
-            System.out.println("1.  Gérer les équipes");
+            System.out.println("1. Gérer les équipes");
             System.out.println("2. Gérer les Jeu");
-            System.out.println("3.Gérer les joueurs");
+            System.out.println("3. Gérer les joueurs");
             System.out.println("4. Gérer les tournois");
             System.out.println("0. Quitter");
 

@@ -14,14 +14,14 @@ import javax.persistence.EntityTransaction;
 
 public class TournoiMetierImpl implements TournoiMetier, GeneralInterface<Tournoi> {
 
-   // private TournoiDaoExtension tournoiDaoExtension;
+    private TournoiDaoExtension tournoiDaoExtension;
     private TournoiDaoImpl tournoiDaoImpl;
 
     public TournoiMetierImpl() {}
 
-  /*  public void setTournoiDaoExtension(TournoiDaoExtension tournoiDaoExtension) {
+   public void setTournoiDaoExtension(TournoiDaoExtension tournoiDaoExtension) {
         this.tournoiDaoExtension = tournoiDaoExtension;
-    }*/
+    }
 
 
     public void setTournoiDaoImpl(TournoiDaoImpl tournoiDaoImpl) {
@@ -34,7 +34,7 @@ public class TournoiMetierImpl implements TournoiMetier, GeneralInterface<Tourno
 
     @Override
     public int obtenirdureeEstimeeTournoi(Long tournoiId) {
-        return tournoiDaoImpl.calculerdureeEstimeeTournoi(tournoiId);
+        return tournoiDaoExtension.calculerdureeEstimeeTournoi(tournoiId);
     }
 
     @Override

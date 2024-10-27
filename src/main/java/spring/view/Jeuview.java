@@ -11,8 +11,10 @@ import java.util.List;
 public class Jeuview {
 
     private JeuServices jeuServices ;
-    public Jeuview(JeuServices jeuServices) {
+    private Jeu jeu;
+    public Jeuview(JeuServices jeuServices,Jeu jeu) {
         this.jeuServices = jeuServices;
+        this.jeu=jeu;
     }
 
     public void startJeu() {
@@ -38,7 +40,7 @@ public class Jeuview {
                 case "3":
                     trouverJeuParId();
                     break;
-                case "5":
+                case "4":
                     afficherTousLesJeux();
                     break;
                 case"0":
@@ -57,7 +59,6 @@ public class Jeuview {
         String difficulte = PattrenUtils.getStringInput("Entrez la difficulté du jeu: ");
         int dureeMoyenne = PattrenUtils.getIntInput("Entrez la durée moyenne du jeu (en minutes): ");;
 
-        Jeu jeu = new Jeu();
         jeu.setNom(nom);
         jeu.setDifficulte(difficulte);
         jeu.setDureeMoyenne(dureeMoyenne);
@@ -76,7 +77,6 @@ public class Jeuview {
             int dureeMoyenne = PattrenUtils.getIntInput("Entrez la nouvelle durée moyenne du jeu (en minutes): ");;
 
 
-            Jeu jeu = new Jeu();
             jeu.setId(id);
             jeu.setNom(nom);
             jeu.setDifficulte(difficulte);

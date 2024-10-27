@@ -60,7 +60,7 @@
 
     <!-- TournoiMetierImpl bean -->
     <bean id="tournoiMetier" class="spring.interfaces.impl.TournoiMetierImpl">
-      <!--  <property name="tournoiDaoExtension" ref="tournoiDaoExtension"/>-->
+      <property name="tournoiDaoExtension" ref="tournoiDaoExtension"/>
         <property name="tournoiDaoImpl" ref="tournoiDaoImpl"></property>
     </bean>
 
@@ -85,18 +85,25 @@
     <!-- View beans -->
     <bean id="equipeview" class="spring.view.Equipeview">
         <constructor-arg ref="equipeServices"/>
+        <constructor-arg ref="equipe"></constructor-arg>
     </bean>
     <bean id="joueurview" class="spring.view.Joueurview">
         <constructor-arg ref="joueurServices"/>
         <constructor-arg ref="equipeServices"/>
+        <constructor-arg ref="joueur"></constructor-arg>
     </bean>
     <bean id="jeuview" class="spring.view.Jeuview">
         <constructor-arg ref="jeuServices"/>
+        <constructor-arg ref="jeu"></constructor-arg>
     </bean>
     <bean id="tournoiview" class="spring.view.Tournoiview">
         <constructor-arg ref="tournoiServices"/>
         <constructor-arg ref="equipeServices"/>
         <constructor-arg ref="jeuServices"/>
+        <constructor-arg ref="tournoi"></constructor-arg>
+        <constructor-arg ref="jeu"></constructor-arg>
+        <constructor-arg ref="equipe"></constructor-arg>
+
     </bean>
 
     <!-- ConsoleUi bean -->

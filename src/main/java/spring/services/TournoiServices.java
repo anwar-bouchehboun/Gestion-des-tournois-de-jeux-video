@@ -44,7 +44,7 @@ public class TournoiServices {
       Optional<Tournoi> tournoiOpt = trouverTournoiParId(tournoiId);
         if (tournoiOpt.isPresent()) {
             Tournoi tournoi = tournoiOpt.get();
-            tournoiMetier.ajouterEquipeAuTournoi(tournoi.getId(),equipeId);
+            tournoiMetier.ajouterEquipeAuTournoi(tournoiId,equipeId);
         } else {
             LoggerMessage.warn("not found");
         }

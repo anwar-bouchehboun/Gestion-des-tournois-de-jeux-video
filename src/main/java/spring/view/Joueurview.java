@@ -14,11 +14,15 @@ import java.util.stream.Collectors;
 public class Joueurview {
 
     private final JoueurServices joueurServices;
+
     private final EquipeServices equipeServices;
 
-    public Joueurview(JoueurServices joueurServices, EquipeServices equipeServices) {
+   private  Joueur joueur;
+
+    public Joueurview(JoueurServices joueurServices, EquipeServices equipeServices, Joueur joueur) {
         this.joueurServices = joueurServices;
         this.equipeServices = equipeServices;
+        this.joueur=joueur;
     }
 
     public void menuJoueur() {
@@ -70,20 +74,20 @@ public class Joueurview {
 
         long equipeId = PattrenUtils.getLongInput("ID de l'équipe (0 si pas d'équipe) :");
 
-        Joueur nouveauJoueur = new Joueur();
-        nouveauJoueur.setPseudo(pseudo);
-        nouveauJoueur.setAge(age);
+
+        joueur.setPseudo(pseudo);
+        joueur.setAge(age);
 
         if (equipeId != 0) {
             Optional<Equipe> equipeOptional = equipeServices.trouverEquipeParId(equipeId);
             if (equipeOptional.isPresent()) {
-                nouveauJoueur.setEquipe(equipeOptional.get());
+                joueur.setEquipe(equipeOptional.get());
             } else {
-                nouveauJoueur.setEquipe(null);
+                joueur.setEquipe(null);
             }
         }
 
-        Joueur joueurCree = joueurServices.creerJoueur(nouveauJoueur);
+        Joueur joueurCree = joueurServices.creerJoueur(joueur);
         System.out.println("Joueur créé avec succès. ID : " + joueurCree.getId());
     }
 
@@ -93,7 +97,7 @@ public class Joueurview {
 
         Optional<Joueur> joueurOptional = joueurServices.trouverJoueurParId(id);
         if (joueurOptional.isPresent()) {
-            Joueur joueur = joueurOptional.get();
+            joueur = joueurOptional.get();
             System.out.println("Joueur trouvé : " + joueur);
 
             String pseudo = PattrenUtils.getStringInput("Nouveau pseudo (laisser vide pour ne pas modifier) : ");
@@ -118,8 +122,8 @@ public class Joueurview {
                 }
             }
 
-            Joueur joueurModifie = joueurServices.modifierJoueur(joueur);
-            System.out.println("Joueur modifié avec succès : " + joueurModifie);
+             joueurServices.modifierJoueur(joueur);
+            System.out.println("Joueur modifié avec succès : " + joueur);
         } else {
             System.out.println("Aucun joueur trouvé avec cet ID.");
         }
