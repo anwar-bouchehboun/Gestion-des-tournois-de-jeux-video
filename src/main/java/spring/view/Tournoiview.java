@@ -16,11 +16,21 @@ public class Tournoiview {
     private final TournoiServices tournoiServices;
     private  final  EquipeServices equipeServices;
     private final JeuServices jeuServices;
+    private Tournoi tournoi;
+    private Jeu jeu;
 
-    public Tournoiview(TournoiServices tournoiServices, EquipeServices equipeServices, JeuServices jeuServices) {
+    private Equipe equipe;
+
+
+
+
+    public Tournoiview(TournoiServices tournoiServices, EquipeServices equipeServices, JeuServices jeuServices, Tournoi tournoi, Jeu jeu, Equipe equipe) {
         this.tournoiServices = tournoiServices;
         this.jeuServices = jeuServices;
         this.equipeServices=equipeServices;
+        this.jeu=jeu;
+        this.tournoi=tournoi;
+        this.equipe=equipe;
     }
 
     public void afficherMenu() {
@@ -62,7 +72,7 @@ public class Tournoiview {
         
         Long jeuId = PattrenUtils.getLongInput("ID du jeu :");
 
-        Jeu jeu = jeuServices.trouverJeuParId(jeuId).orElse(null);
+        jeu = jeuServices.trouverJeuParId(jeuId).orElse(null);
         if (jeu == null) {
             System.out.println("Jeu non trouvé. Création du tournoi annulée.");
             return;
@@ -81,25 +91,24 @@ public class Tournoiview {
 
         String statut = PattrenUtils.getStringInput("Quel type de Status voulez-vous ajouter ? (1.PLANIFIE, 2.EN_COURS,3.TERMINE,4.ANNULE");
 
-        Tournoi nouveauTournoi = new Tournoi();
-        nouveauTournoi.setTitre(titre);
-        nouveauTournoi.setJeu(jeu);
-        nouveauTournoi.setDateDebut(dateDebut);
-        nouveauTournoi.setDateFin(dateFin);
-        nouveauTournoi.setNombreSpectateurs(nombreSpectateurs);
-        nouveauTournoi.setDureeEstimee(dureeEstimee);
-        nouveauTournoi.setTempsPause(tempsPause);
-        nouveauTournoi.setTempsCeremonie(tempsCeremonie);
-        nouveauTournoi.setStatut(statut);
+        tournoi.setTitre(titre);
+        tournoi.setJeu(jeu);
+        tournoi.setDateDebut(dateDebut);
+        tournoi.setDateFin(dateFin);
+        tournoi.setNombreSpectateurs(nombreSpectateurs);
+        tournoi.setDureeEstimee(dureeEstimee);
+        tournoi.setTempsPause(tempsPause);
+        tournoi.setTempsCeremonie(tempsCeremonie);
+        tournoi.setStatut(statut);
 
-        Tournoi tournoiCree = tournoiServices.creerTournoi(nouveauTournoi);
-        System.out.println("Tournoi créé avec l'ID : " + tournoiCree.getId());
+        tournoiServices.creerTournoi(tournoi);
+        System.out.println("Tournoi créé avec l'ID : " + tournoi.getId());
     }
 
     private void modifierTournoi() {
 
         Long id = PattrenUtils.getLongInput("ID du tournoi à modifier :");
-        Tournoi tournoi = tournoiServices.trouverTournoiParId(id).orElse(null);
+       tournoi = tournoiServices.trouverTournoiParId(id).orElse(null);
         if (tournoi == null) {
             System.out.println("Tournoi non trouvé.");
             return;
@@ -115,7 +124,7 @@ public class Tournoiview {
 
 
         if (jeuId != 0) {
-            Jeu jeu = jeuServices.trouverJeuParId(jeuId).orElse(null);
+             jeu = jeuServices.trouverJeuParId(jeuId).orElse(null);
             if (jeu != null) {
                 tournoi.setJeu(jeu);
             } else {
@@ -164,8 +173,8 @@ public class Tournoiview {
             tournoi.setStatut(statut);
         }
 
-        Tournoi tournoiModifie = tournoiServices.modifierTournoi(tournoi);
-        System.out.println("Tournoi modifié avec succès : " + tournoiModifie.getId());
+    tournoiServices.modifierTournoi(tournoi);
+        System.out.println("Tournoi modifié avec succès : " + tournoi.getId());
     }
 
 
@@ -207,14 +216,14 @@ public class Tournoiview {
         Long equipeId = PattrenUtils.getLongInput("ID de l'équipe à ajouter : ");
 
 
-        Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
-        Equipe equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
+        tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
+        equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
         if (tournoi == null || equipe==null) {
             System.out.println("Tournoi non trouvé. ou Equipe non Trouvé");
             return;
         }
 
-        tournoiServices.ajouterEquipeAuTournoiParIds(tournoi.getId(),equipeId);
+        tournoiServices.ajouterEquipeAuTournoiParIds(tournoi.getId(),equipe.getId());
         System.out.println("Équipe ajoutée au tournoi avec succès.");
     }
 
@@ -223,13 +232,13 @@ public class Tournoiview {
 
         Long equipeId = PattrenUtils.getLongInput("ID de l'équipe à Retier : ");
 
-        Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
-        Equipe equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
+       tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
+        equipe=equipeServices.trouverEquipeParId(equipeId).orElse(null);
         if (tournoi == null || equipe==null) {
             System.out.println("Tournoi non trouvé ou Equipe non Trouve");
             return;
         }
-        tournoiServices.retirerEquipeDuTournoi(tournoi.getId(),equipeId);
+        tournoiServices.retirerEquipeDuTournoi(tournoi.getId(),equipe.getId());
         System.out.println("Équipe retirée du tournoi avec succès.");
     }
 
@@ -256,13 +265,13 @@ public class Tournoiview {
     private void obtenirDureeEstimeeTournoi() {
         Long tournoiId = PattrenUtils.getLongInput("ID du tournoi :");
 
-        Tournoi tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
+     tournoi = tournoiServices.trouverTournoiParId(tournoiId).orElse(null);
         if (tournoi == null) {
             System.out.println("Tournoi non trouvé.");
             return;
         }
         int dureeEstimee = tournoiServices.obtenirDureeEstimeeTournoi(tournoiId);
-        System.out.println("Durée estimée du tournoi : " + dureeEstimee + " jours");
+        System.out.println("Durée estimée du tournoi : " + dureeEstimee );
     }
 
 
