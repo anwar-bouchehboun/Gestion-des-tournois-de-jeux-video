@@ -93,7 +93,7 @@ Un menu console permet d'interagir avec l'application pour :
 3. Lancez l'application via la classe principale (`Main.class`).
 
    ```bash
-   java -jar out/spring-app.jar
+   java -jar out/artifacts/spring-app.jar
    ```
 
 ## Utilisation
